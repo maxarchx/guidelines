@@ -2962,7 +2962,7 @@
     ```
 
   <a name="naming--camelCase"></a><a name="22.3"></a>
-  - [23.3](#naming--camelCase) Используйте `camelCase` для именования функций и методов. Используйте `snake_case` для именования переменных и свойств.
+  - [23.3](#naming--camelCase) Используйте `camelCase` для именования функций и методов.
 
     ```javascript
     // плохо
