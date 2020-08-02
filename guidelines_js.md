@@ -1683,7 +1683,7 @@
 ## <a name="comparison-operators--equality">Операторы сравнения и равенства</a>
 
   <a name="comparison--eqeqeq"></a><a name="15.1"></a>
-  - [15.1](#comparison--eqeqeq) Используйте `===` и `!==` вместо `==` и `!=`. eslint: [`eqeqeq`](https://eslint.org/docs/rules/eqeqeq.html)
+  - [15.1](#comparison--eqeqeq) Используйте `===` и `!==` вместо `==` и `!=`. eslint: [`eqeqeq`](https://eslint.org/docs/rules/eqeqeq.html). Использование `==` и `!=` допускается только в случае уменьшения лишнего кода на приведение типов. 
 
   <a name="comparison--if"></a><a name="15.2"></a>
   - [15.2](#comparison--if) Условные операторы, такие как `if`, вычисляются путём приведения к логическому типу `Boolean` через абстрактный метод `ToBoolean` и всегда следуют следующим правилам:
