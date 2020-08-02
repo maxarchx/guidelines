@@ -2972,7 +2972,7 @@
     function destroyThisShip() {}
     ```
     
-  <a name="naming--camelCase"></a><a name="22.4"></a>
+  <a name="naming--snakeCase"></a><a name="22.4"></a>
   - [23.4](#naming--snakeCase) Используйте `snake_case` для именования переменных и свойств.
 
     ```javascript
