@@ -14,7 +14,6 @@
   1. [Стрелочные функции](#arrow-functions)
   1. [Классы и конструкторы](#classes--constructors)
   1. [Модули](#modules)
-  1. [Итераторы и генераторы](#iterators-and-generators)
   1. [Свойства](#properties)
   1. [Переменные](#variables)
   1. [Подъём](#hoisting)
@@ -72,9 +71,9 @@
 ## <a name="references">Объявление переменных</a>
 
 **Использование var, let, const**
-- **var** - должен использоваться только в клиентском коде, который не будет преобразован в es5 (для совместимости со старыми браузерами).
-- **let** - используется для изменяемых переменных (mutable).
-- **const** - должен использоваться для объявления констант, а также при объявлении объектов (и массивов).
+- `var` - должен использоваться только в клиентском коде, который не будет преобразован в es5 (для совместимости со старыми браузерами).
+- `let` - используется для изменяемых переменных (mutable).
+- `const` - должен использоваться для объявления констант, а также при объявлении объектов (и массивов).
 
   <a name="references--prefer-const"></a><a name="2.1"></a>
   - [2.1](#references--prefer-const) Используйте `const` для объявления переменных; избегайте `var`. eslint: [`prefer-const`](https://eslint.org/docs/rules/prefer-const.html), [`no-const-assign`](https://eslint.org/docs/rules/no-const-assign.html)
@@ -138,34 +137,8 @@
     const item = {};
     ```
 
-  <a name="es6-computed-properties"></a><a name="3.4"></a>
-  - [3.2](#es6-computed-properties) Используйте вычисляемые имена свойств, когда создаёте объекты с динамическими именами свойств.
-
-    > Почему? Они позволяют вам определить все свойства объекта в одном месте.
-
-    ```javascript
-
-    function getKey(k) {
-      return `a key named ${k}`;
-    }
-
-    // плохо
-    const obj = {
-      id: 5,
-      name: 'San Francisco',
-    };
-    obj[getKey('enabled')] = true;
-
-    // хорошо
-    const obj = {
-      id: 5,
-      name: 'San Francisco',
-      [getKey('enabled')]: true,
-    };
-    ```
-
-  <a name="es6-object-shorthand"></a><a name="3.5"></a>
-  - [3.3](#es6-object-shorthand) Используйте сокращённую запись метода объекта. eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand.html)
+  <a name="es6-object-shorthand"></a><a name="3.2"></a>
+  - [3.2](#es6-object-shorthand) Используйте сокращённую запись метода объекта. eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand.html)
 
     ```javascript
     // плохо
@@ -187,8 +160,8 @@
     };
     ```
 
-  <a name="es6-object-concise"></a><a name="3.6"></a>
-  - [3.4](#es6-object-concise) Используйте сокращённую запись свойств объекта. eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand.html)
+  <a name="es6-object-concise"></a><a name="3.3"></a>
+  - [3.3](#es6-object-concise) Используйте сокращённую запись свойств объекта. eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand.html)
 
     > Почему? Это короче и понятнее.
 
@@ -206,8 +179,8 @@
     };
     ```
 
-  <a name="objects--grouped-shorthand"></a><a name="3.7"></a>
-  - [3.5](#objects--grouped-shorthand) Группируйте ваши сокращённые записи свойств в начале объявления объекта.
+  <a name="objects--grouped-shorthand"></a><a name="3.4"></a>
+  - [3.4](#objects--grouped-shorthand) Группируйте ваши сокращённые записи свойств в начале объявления объекта.
 
     > Почему? Так легче сказать, какие свойства используют сокращённую запись.
 
@@ -236,8 +209,8 @@
     };
     ```
 
-  <a name="objects--quoted-props"></a><a name="3.8"></a>
-  - [3.6](#objects--quoted-props) Только недопустимые идентификаторы помещаются в кавычки. eslint: [`quote-props`](https://eslint.org/docs/rules/quote-props.html)
+  <a name="objects--quoted-props"></a><a name="3.5"></a>
+  - [3.5](#objects--quoted-props) Только недопустимые идентификаторы помещаются в кавычки. eslint: [`quote-props`](https://eslint.org/docs/rules/quote-props.html)
 
     > Почему? На наш взгляд, такой код легче читать. Это улучшает подсветку синтаксиса, а также облегчает оптимизацию для многих JS-движков.
 
@@ -257,28 +230,8 @@
     };
     ```
 
-  <a name="objects--prototype-builtins"></a>
-  - [3.7](#objects--prototype-builtins) Не вызывайте напрямую методы `Object.prototype`, такие как `hasOwnProperty`, `propertyIsEnumerable`, и `isPrototypeOf`. eslint: [`no-prototype-builtins`](https://eslint.org/docs/rules/no-prototype-builtins)
-
-    > Почему? Эти методы могут быть переопределены в свойствах объекта, который мы проверяем `{ hasOwnProperty: false }`, или этот объект может быть `null` (`Object.create(null)`).
-
-    ```javascript
-    // плохо
-    console.log(object.hasOwnProperty(key));
-
-    // хорошо
-    console.log(Object.prototype.hasOwnProperty.call(object, key));
-
-    // отлично
-    const has = Object.prototype.hasOwnProperty; // Кэшируем запрос в рамках модуля.
-    console.log(has.call(object, key));
-    /* или */
-    import has from 'has'; // https://www.npmjs.com/package/has
-    console.log(has(object, key));
-    ```
-
   <a name="objects--rest-spread"></a>
-  - [3.8](#objects--rest-spread) Используйте оператор расширения вместо [`Object.assign`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) для поверхностного копирования объектов. Используйте синтаксис оставшихся свойств, чтобы получить новый объект с некоторыми опущенными свойствами.
+  - [3.6](#objects--rest-spread) Используйте оператор расширения вместо [`Object.assign`](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) для поверхностного копирования объектов. Используйте синтаксис оставшихся свойств, чтобы получить новый объект с некоторыми опущенными свойствами.
 
     ```javascript
     // очень плохо
@@ -363,7 +316,7 @@
     const arrLike = { 0: 'foo', 1: 'bar', 2: 'baz', length: 3 };
 
     // плохо
-    const arr = Array.prototype.slice.call(arrLike);
+    const arr = arrLike.slice();
 
     // хорошо
     const arr = Array.from(arrLike);
@@ -434,20 +387,20 @@
       [0, 1], [2, 3], [4, 5],
     ];
 
-    const objectInArray = [{
+    const object_array = [{
       id: 1,
     }, {
       id: 2,
     }];
 
-    const numberInArray = [
+    const number_array = [
       1, 2,
     ];
 
     // хорошо
     const arr = [[0, 1], [2, 3], [4, 5]];
 
-    const objectInArray = [
+    const object_array = [
       {
         id: 1,
       },
@@ -456,7 +409,7 @@
       },
     ];
 
-    const numberInArray = [
+    const number_array = [
       1,
       2,
     ];
@@ -474,21 +427,21 @@
     ```javascript
     // плохо
     function getFullName(user) {
-      const firstName = user.firstName;
-      const lastName = user.lastName;
+      const first_name = user.first_name;
+      const last_name = user.last_name;
 
-      return `${firstName} ${lastName}`;
+      return `${first_name} ${last_name}`;
     }
 
     // хорошо
     function getFullName(user) {
-      const { firstName, lastName } = user;
-      return `${firstName} ${lastName}`;
+      const { first_name, last_name } = user;
+      return `${first_name} ${last_name}`;
     }
 
     // отлично
-    function getFullName({ firstName, lastName }) {
-      return `${firstName} ${lastName}`;
+    function getFullName({ first_name, last_name }) {
+      return `${first_name} ${last_name}`;
     }
     ```
 
@@ -556,18 +509,18 @@
 
     ```javascript
     // плохо
-    const errorMessage = 'This is a super long error that was thrown because \
+    const error_message = 'This is a super long error that was thrown because \
     of Batman. When you stop to think about how Batman had anything to do \
     with this, you would get nowhere \
     fast.';
 
     // плохо
-    const errorMessage = 'This is a super long error that was thrown because ' +
+    const error_message = 'This is a super long error that was thrown because ' +
       'of Batman. When you stop to think about how Batman had anything to do ' +
       'with this, you would get nowhere fast.';
 
     // хорошо
-    const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
+    const error_message = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
     ```
 
   <a name="es6-template-literals"></a><a name="6.4"></a>
@@ -605,27 +558,18 @@
 
 ## <a name="functions">Функции</a>
 
-  !!!!!
   <a name="functions--declarations"></a><a name="7.1"></a>
-  - [7.1](#functions--declarations) Используйте функциональные выражения вместо объявлений функций. eslint: [`func-style`](https://eslint.org/docs/rules/func-style)
-
-    > Почему? У объявлений функций есть подъём. Это означает, что можно использовать функцию до того, как она определена в файле, но это вредит читабельности и поддержке. Если вы обнаружили, что определение функции настолько большое или сложное, что мешает понимать остальную часть файла, то, возможно, пришло время извлечь его в отдельный модуль. Не забудьте явно назвать функциональное выражение, независимо от того, подразумевается ли имя из содержащейся переменной (такое часто бывает в современных браузерах или при использовании компиляторов, таких как Babel). Это помогает точнее определять место ошибки по стеку вызовов. ([Обсуждение](https://github.com/airbnb/javascript/issues/794))
+  - [7.1](#functions--declarations) Имя функции должно быть глаголом на английском языке или начинаться с него. Для имён, состоящих из нескольких слов, используйте **camelCase**.
 
     ```javascript
     // плохо
-    function foo() {
-      // ...
-    }
-
-    // плохо
-    const foo = function () {
+    function pravkaspiska() {
       // ...
     };
 
     // хорошо
-    // лексическое имя, отличное от вызываемой(-ых) переменной(-ых)
-    const foo = function uniqueMoreDescriptiveLexicalFoo() {
-      // ...
+    function editName() {
+    // тело функции
     };
     ```
 
@@ -799,7 +743,7 @@
 
     // хорошо
     function f2(obj) {
-      const key = Object.prototype.hasOwnProperty.call(obj, 'key') ? obj.key : 1;
+      const key = obj.hasOwnProperty('key') ? obj.key : 1;
     }
     ```
 
@@ -844,9 +788,6 @@
     // хорошо
     const x = [1, 2, 3, 4, 5];
     console.log(...x);
-
-    // плохо
-    new (Function.prototype.bind.apply(Date, [null, 2016, 8, 5]));
 
     // хорошо
     new Date(...[2016, 8, 5]);
@@ -1016,18 +957,18 @@
 
     ```javascript
     // плохо
-    const itemHeight = (item) => item.height <= 256 ? item.largeSize : item.smallSize;
+    const item_height = (item) => item.height <= 256 ? item.large_size : item.small_size;
 
     // плохо
-    const itemHeight = (item) => item.height >= 256 ? item.largeSize : item.smallSize;
+    const item_height = (item) => item.height >= 256 ? item.large_size : item.small_size;
 
     // хорошо
-    const itemHeight = (item) => (item.height <= 256 ? item.largeSize : item.smallSize);
+    const item_height = (item) => (item.height <= 256 ? item.large_size : item.small_size);
 
     // хорошо
-    const itemHeight = (item) => {
-      const { height, largeSize, smallSize } = item;
-      return height <= 256 ? largeSize : smallSize;
+    const item_height = (item) => {
+      const { height, large_size, small_size } = item;
+      return height <= 256 ? large_size : small_size;
     };
     ```
 
@@ -1400,114 +1341,6 @@
 
 **[⬆ к оглавлению](#Оглавление)**
 
-## <a name="iterators-and-generators">Итераторы и генераторы</a>
-
-!!!!
-  <a name="iterators--nope"></a><a name="11.1"></a>
-  - [11.1](#iterators--nope) Не используйте итераторы. Применяйте функции высшего порядка вместо таких циклов как `for-in` или `for-of`. eslint: [`no-iterator`](https://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
-
-    > Почему? Это обеспечивает соблюдение нашего правила о неизменности переменных. Работать с чистыми функциями, которые возвращают значение, проще, чем с функциями с побочными эффектами.
-
-    > Используйте `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... для итерации по массивам, а `Object.keys()` / `Object.values()` / `Object.entries()` для создания массивов, с помощью которых можно итерироваться по объектам.
-
-    ```javascript
-    const numbers = [1, 2, 3, 4, 5];
-
-    // плохо
-    let sum = 0;
-    for (let num of numbers) {
-      sum += num;
-    }
-    sum === 15;
-
-    // хорошо
-    let sum = 0;
-    numbers.forEach((num) => {
-      sum += num;
-    });
-    sum === 15;
-
-    // отлично (используйте силу функций)
-    const sum = numbers.reduce((total, num) => total + num, 0);
-    sum === 15;
-
-    // плохо
-    const increasedByOne = [];
-    for (let i = 0; i < numbers.length; i++) {
-      increasedByOne.push(numbers[i] + 1);
-    }
-
-    // хорошо
-    const increasedByOne = [];
-    numbers.forEach((num) => {
-      increasedByOne.push(num + 1);
-    });
-
-    // отлично (продолжайте в том же духе)
-    const increasedByOne = numbers.map((num) => num + 1);
-    ```
-
-  <a name="generators--nope"></a><a name="11.2"></a>
-  - [11.2](#generators--nope) Не используйте пока генераторы в клиентском коде.
-
-    > Почему? Они не очень хорошо транспилируются в ES5.
-
-  <a name="generators--spacing"></a>
-  - [11.3](#generators--spacing) Если всё-таки необходимо использовать генераторы, или вы не обратили внимания на [наш совет](#generators--nope), убедитесь, что `*` у функции генератора расположена должным образом. eslint: [`generator-star-spacing`](https://eslint.org/docs/rules/generator-star-spacing)
-
-    > Почему? `function` и `*` являются частью одного и того же ключевого слова. `*` не является модификатором для `function`, `function*` является уникальной конструкцией, отличной от `function`.
-
-    ```javascript
-    // плохо
-    function * foo() {
-      // ...
-    }
-
-    const bar = function * () {
-      // ...
-    };
-
-    const baz = function *() {
-      // ...
-    };
-
-    const quux = function*() {
-      // ...
-    };
-
-    function*foo() {
-      // ...
-    }
-
-    function *foo() {
-      // ...
-    }
-
-    // очень плохо
-    function
-    *
-    foo() {
-      // ...
-    }
-
-    const wat = function
-    *
-    () {
-      // ...
-    };
-
-    // хорошо
-    function* foo() {
-      // ...
-    }
-
-    const foo = function* () {
-      // ...
-    };
-    ```
-
-**[⬆ к оглавлению](#Оглавление)**
-
 ## <a name="properties">Свойства</a>
 
   <a name="properties--dot"></a><a name="12.1"></a>
@@ -1684,43 +1517,9 @@
 
     // тоже самое и для `const`
     ```
-!!!!!
-  <a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
-  - [13.6](#variables--unary-increment-decrement) Избегайте использования унарных инкрементов и декрементов (`++`, `--`). eslint [`no-plusplus`](https://eslint.org/docs/rules/no-plusplus)
-
-    > Почему? Согласно документации eslint, унарные инкремент и декремент автоматически вставляют точку с запятой, что может стать причиной трудноуловимых ошибок при инкрементировании и декрементировании значений. Также нагляднее изменять ваши значения таким образом `num += 1` вместо `num++` или `num ++`. Запрет на унарные инкремент и декремент ограждает вас от непреднамеренных преждевременных инкрементаций/декрементаций значений, которые могут привести к непредсказуемому поведению вашей программы.
-
-    ```javascript
-    // плохо
-
-    const array = [1, 2, 3];
-    let num = 1;
-    num++;
-    --num;
-
-    let sum = 0;
-    let truthyCount = 0;
-    for (let i = 0; i < array.length; i++) {
-      let value = array[i];
-      sum += value;
-      if (value) {
-        truthyCount++;
-      }
-    }
-
-    // хорошо
-
-    const array = [1, 2, 3];
-    let num = 1;
-    num += 1;
-    num -= 1;
-
-    const sum = array.reduce((a, b) => a + b, 0);
-    const truthyCount = array.filter(Boolean).length;
-    ```
 
   <a name="variables--linebreak"></a>
-  - [13.7](#variables--linebreak) В присвоении избегайте разрывов строк до и после `=`. Если ваше присвоение нарушает правило [`max-len`](https://eslint.org/docs/rules/max-len.html), оберните значение в круглые скобки. eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).
+  - [13.6](#variables--linebreak) В присвоении избегайте разрывов строк до и после `=`. Если ваше присвоение нарушает правило [`max-len`](https://eslint.org/docs/rules/max-len.html), оберните значение в круглые скобки. eslint [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak.html).
 
     > Почему? Разрывы строк до и после `=` могут приводить к путанице в понимании значения.
 
@@ -1743,7 +1542,7 @@
     ```
 
   <a name="variables--no-unused-vars"></a>
-  - [13.8](#variables--no-unused-vars) Запретить неиспользуемые переменные. eslint: [`no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars)
+  - [13.7](#variables--no-unused-vars) Запретить неиспользуемые переменные. eslint: [`no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars)
 
     > Почему? Переменные, которые объявлены и не используются в коде, скорее всего, являются ошибкой из-за незавершённого рефакторинга. Такие переменные занимают место в коде и могут привести к путанице при чтении.
 
@@ -2889,16 +2688,16 @@
 
     // плохо
     const hero = {
-        firstName: 'Ada'
-      , lastName: 'Lovelace'
+        first_name: 'Ada'
+      , last_name: 'Lovelace'
       , birthYear: 1815
       , superPower: 'computers'
     };
 
     // хорошо
     const hero = {
-      firstName: 'Ada',
-      lastName: 'Lovelace',
+      first_name: 'Ada',
+      last_name: 'Lovelace',
       birthYear: 1815,
       superPower: 'computers',
     };
@@ -2912,16 +2711,16 @@
     ```diff
     // плохо - git diff без висячей запятой
     const hero = {
-         firstName: 'Florence',
-    -    lastName: 'Nightingale'
-    +    lastName: 'Nightingale',
+         first_name: 'Florence',
+    -    last_name: 'Nightingale'
+    +    last_name: 'Nightingale',
     +    inventorOf: ['coxcomb chart', 'modern nursing']
     };
 
     // хорошо - git diff с висячей запятой
     const hero = {
-         firstName: 'Florence',
-         lastName: 'Nightingale',
+         first_name: 'Florence',
+         last_name: 'Nightingale',
     +    inventorOf: ['coxcomb chart', 'modern nursing'],
     };
     ```
@@ -2929,8 +2728,8 @@
     ```javascript
     // плохо
     const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully'
+      first_name: 'Dana',
+      last_name: 'Scully'
     };
 
     const heroes = [
@@ -2940,8 +2739,8 @@
 
     // хорошо
     const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully',
+      first_name: 'Dana',
+      last_name: 'Scully',
     };
 
     const heroes = [
@@ -2951,8 +2750,8 @@
 
     // плохо
     function createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf
     ) {
       // ничего не делает
@@ -2960,8 +2759,8 @@
 
     // хорошо
     function createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf,
     ) {
       // ничего не делает
@@ -2969,8 +2768,8 @@
 
     // хорошо (обратите внимание, что висячей запятой не должно быть после rest-параметра)
     function createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf,
       ...heroArgs
     ) {
@@ -2979,22 +2778,22 @@
 
     // плохо
     createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf
     );
 
     // хорошо
     createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf,
     );
 
     // хорошо (обратите внимание, что висячей запятой не должно быть после rest-аргумента)
     createHero(
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       inventorOf,
       ...heroArgs
     );
