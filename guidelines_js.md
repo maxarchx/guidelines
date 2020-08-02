@@ -631,7 +631,7 @@
     ```javascript
     // плохо
     function concatenateAll() {
-      const args = Array.prototype.slice.call(arguments);
+      const args = args.slice(arguments);
       return args.join('');
     }
 
@@ -903,17 +903,15 @@
 
     ```javascript
     // плохо
-    ['get', 'post', 'put'].map((httpMethod) => Object.prototype.hasOwnProperty.call(
-        httpMagicObjectWithAVeryLongName,
-        httpMethod,
+    ['get', 'post', 'put'].map((http_method) => http_magic_object_with_very_long_name.hasOwnProperty(
+        http_method,
       )
     );
 
     // хорошо
-    ['get', 'post', 'put'].map((httpMethod) => (
-      Object.prototype.hasOwnProperty.call(
-        httpMagicObjectWithAVeryLongName,
-        httpMethod,
+    ['get', 'post', 'put'].map((http_method) => (
+      http_magic_object_with_very_long_name.hasOwnProperty(
+        http_method,
       )
     ));
     ```
